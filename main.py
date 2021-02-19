@@ -21,6 +21,11 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.type == pygame.K_LEFT:
+                playerX_change = 0.1
+            if event.type == pygame.K_RIGHT:
+                playerX_change = 0.1
 
     screen.fill((0,0,0))
     player()
