@@ -15,6 +15,13 @@ pygame.display.set_icon(icon)
 background = pygame.image.load('background.png')
 
 score = 0
+font = pygame.font.Font('freesansbold.ttf',32)
+fontX = 10
+fontY = 10
+
+def show_score(x,y):
+    score_value = font.render('Score : '+str(score),True,(255,255,255))
+    screen.blit(score_value,(x,y))
 
 playerimg = pygame.image.load('player1.png')
 playerX = 400
@@ -46,7 +53,7 @@ def player(x, y):
     screen.blit(playerimg, (x, y))
 
 
-def enemy(x, y,i):
+def enemy(x, y, i):
     screen.blit(enemyimg[i], (x, y))
 
 
@@ -107,10 +114,9 @@ while running:
             bulletY = 480
             score += 1
             bullet_state = 0
-            print(score)
             enemyX[i] = random.randint(0, 736)
             enemyY[i] = random.randint(32, 250)
-        enemy(enemyX[i], enemyY[i],i)
+        enemy(enemyX[i], enemyY[i], i)
 
     if bulletY <= 0:
         bullet_state = 0
@@ -121,5 +127,5 @@ while running:
         bulletY -= bulletY_change
 
     player(playerX, playerY)
-
+    show_score(fontX,fontY)
     pygame.display.update()
