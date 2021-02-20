@@ -22,13 +22,12 @@ enemyimg = pygame.image.load('enemy.png')
 enemyX = random.randint(0, 736)
 enemyY = random.randint(32, 250)
 enemyX_change = 3
-enemyY_change = 50
+enemyY_change = 30
 
 bulletimg = pygame.image.load('bullet.png')
 bulletX = playerX
 bulletY = 480
-bulletX_change = 3
-bulletY_change = 10
+bulletY_change = 8
 bullet_state = 0
 
 
@@ -43,7 +42,7 @@ def enemy(x, y):
 def fire_bullet(x, y):
     global bullet_state
     bullet_state = 1
-    screen.blit(bulletimg,(x+16,y+10))
+    screen.blit(bulletimg, (x + 16, y + 10))
 
 
 # Create game loop
@@ -57,11 +56,12 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                playerX_change = -4
+                playerX_change = -5
             if event.key == pygame.K_RIGHT:
-                playerX_change = 4
+                playerX_change = 5
             if event.key == pygame.K_SPACE:
-                fire_bullet(playerX,bulletY)
+                fire_bullet(playerX, bulletY)
+                bulletX = playerX
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
                 playerX_change = 0
@@ -70,22 +70,21 @@ while running:
 
     if playerX <= 0:
         playerX = 0
-    elif playerX >= 760:
-        playerX = 760
+    elif playerX >= 736:
+        playerX = 736
 
     enemyX += enemyX_change
 
     if enemyX <= 0:
-        enemyX_change = 2
+        enemyX_change = 3
         enemyY += enemyY_change
     elif enemyX >= 740:
-        enemyX_change = -2
+        enemyX_change = -3
         enemyY += enemyY_change
 
     if bullet_state == 1:
-        fire_bullet(playerX,bulletY)
+        fire_bullet(bulletX, bulletY)
         bulletY -= bulletY_change
-
 
     player(playerX, playerY)
     enemy(enemyX, enemyY)
