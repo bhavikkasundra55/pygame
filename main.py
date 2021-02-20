@@ -1,6 +1,7 @@
 import pygame
 import random
 from math import pow, sqrt
+from pygame import mixer
 
 # Initialize pygame
 pygame.init()
@@ -14,14 +15,28 @@ pygame.display.set_icon(icon)
 
 background = pygame.image.load('background.png')
 
+mixer.music.load('background.wav')
+mixer.music.play(-1)
+
 score = 0
-font = pygame.font.Font('freesansbold.ttf',32)
+font = pygame.font.Font('freesansbold.ttf', 32)
 fontX = 10
 fontY = 10
 
-def show_score(x,y):
-    score_value = font.render('Score : '+str(score),True,(255,255,255))
-    screen.blit(score_value,(x,y))
+gameoverfont = pygame.font.Font('freesansbold.ttf', 64)
+
+
+def show_score(x, y):
+    score_value = font.render('Score : ' + str(score), True, (255, 255, 255))
+    screen.blit(score_value, (x, y))
+
+
+def game_over(score):
+    gameover = gameoverfont.render(' GAME OVER ', True, (255, 255, 255))
+    screen.blit(gameover, (200, 150))
+    total_score = font.render('Total Score : ' + str(score), True, (255, 255, 255))
+    screen.blit(total_score, (250, 250))
+
 
 playerimg = pygame.image.load('player1.png')
 playerX = 400
@@ -86,6 +101,8 @@ while running:
                 playerX_change = 8
             if event.key == pygame.K_SPACE:
                 if bullet_state == 0:
+                    bullet_sound = mixer.Sound('laser.wav')
+                    bullet_sound.play()
                     bulletX = playerX
                     fire_bullet(bulletX, bulletY)
 
@@ -101,6 +118,12 @@ while running:
         playerX = 736
 
     for i in range(no_of_enemy):
+
+        if enemyY[i] >= 440:
+            for j in range(no_of_enemy):
+                enemyY[j] = 1000
+                game_over(score)
+
         enemyX[i] += enemyX_change[i]
         if enemyX[i] <= 0:
             enemyX_change[i] = 5
@@ -111,6 +134,8 @@ while running:
 
         collision = isCollision(enemyX[i], enemyY[i], bulletX, bulletY)
         if collision:
+            collision_sound = mixer.Sound('explosion.wav')
+            collision_sound.play()
             bulletY = 480
             score += 1
             bullet_state = 0
@@ -127,5 +152,5 @@ while running:
         bulletY -= bulletY_change
 
     player(playerX, playerY)
-    show_score(fontX,fontY)
+    show_score(fontX, fontY)
     pygame.display.update()
