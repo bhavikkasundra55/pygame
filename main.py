@@ -26,7 +26,7 @@ enemyX = []
 enemyY = []
 enemyX_change = []
 enemyY_change = []
-no_of_enemy = 5
+no_of_enemy = 3
 
 for i in range(no_of_enemy):
     enemyimg.append(pygame.image.load('enemy.png'))
@@ -93,7 +93,7 @@ while running:
     elif playerX >= 736:
         playerX = 736
 
-    for i in range(no_of_enemy)
+    for i in range(no_of_enemy):
         enemyX[i] += enemyX_change[i]
         if enemyX[i] <= 0:
             enemyX_change[i] = 5
@@ -102,7 +102,7 @@ while running:
             enemyX_change[i] = -5
             enemyY[i] += enemyY_change[i]
 
-        collision = isCollision(enemyX[i], enemyY[i], bulletX[i], bulletY[i])
+        collision = isCollision(enemyX[i], enemyY[i], bulletX, bulletY)
         if collision:
             bulletY = 480
             score += 1
